@@ -13,6 +13,5 @@ public class GameManager : MonoBehaviour
     public void StartBtn()
     {
         isStarted = true;
-        
     }
 }

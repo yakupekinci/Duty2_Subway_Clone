@@ -12,4 +12,12 @@ public class Coin : MonoBehaviour
             .SetEase(Ease.Linear); // Dönüş hızını ayarla, örneğin Lineer eğri
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            gameObject.SetActive(false);
+        }
+    }
+
 }

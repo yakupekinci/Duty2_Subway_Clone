@@ -6,12 +6,10 @@ using UnityEngine;
 public class MapSpawner : MonoBehaviour
 {
     public MapPool MapPool;
-
-    private void Start()
+    private void Start()    
     {
         MapPool = FindObjectOfType<MapPool>();
     }
-
     private void OnTriggerEnter(Collider other)
     {
 
