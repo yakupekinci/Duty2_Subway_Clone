@@ -5,9 +5,10 @@ using System.Collections;
 
 public class PlayerMovement : MonoBehaviour
 {
-    private Rigidbody _rigidbody;
-    private GameManager _gameManager;
-    private Animator _animator;
+    public Rigidbody _rigidbody;
+    public GameManager _gameManager;
+    public Animator _animator;
+    public CapsuleCollider _collider;
 
     [Header("Movement ")]
     [SerializeField] private float currentSpeed = 10f;
@@ -17,6 +18,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Jump ")]
     [SerializeField] private float _jumpForce = 10f;
     [SerializeField] private float _jumpCooldown = 0.1f;
+    [SerializeField] private float _crouchCooldown = 0.1f;
     [SerializeField] private float _gravityScaler = 2.5f;
 
     [Header("Ground Check")]
@@ -34,6 +36,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float speedIncreaseInterval = 5f;
 
     private bool canJump = true;
+    private bool canCrouch = true;
     private bool isGrounded;
     private int lane = 2;
     private bool canShift = true;
@@ -49,8 +52,9 @@ public class PlayerMovement : MonoBehaviour
         _rigidbody = GetComponent<Rigidbody>();
         _gameManager = FindObjectOfType<GameManager>();
         _animator = transform.GetChild(0).GetComponent<Animator>();
+        _collider = GetComponent<CapsuleCollider>();
         currentSpeed = startingSpeed;
-        //InvokeRepeating("IncreaseSpeed", speedIncreaseInterval, speedIncreaseInterval);
+        InvokeRepeating("IncreaseSpeed", speedIncreaseInterval, speedIncreaseInterval);
     }
 
     private void Awake()
@@ -101,21 +105,24 @@ public class PlayerMovement : MonoBehaviour
         MoveForward(currentSpeed);
         if (canShift)
         {
-            if (Input.GetKeyDown(KeyCode.A) && lane > 1)
+            if ((Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow)) && (lane > 1))
             {
                 MoveLeft();
             }
-            if (Input.GetKeyDown(KeyCode.D) && lane < 3)
+            if ((Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) && (lane < 3))
             {
                 MoveRight();
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded && canJump)
+        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.UpArrow)) && (isGrounded && canJump))
         {
             Jump();
         }
-
+        if ((Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow)) && (isGrounded && canCrouch))
+        {
+            Crough();
+        }
     }
 
     private void Jump()
@@ -129,13 +136,30 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    private void Crough()
+    {
+        if (isGrounded)
+        {
+            _animator.SetBool("isCrouching", true);
+            _collider.height *= 0.5f;
+            canCrouch = false;
+            StartCoroutine(EnableCrouch());
+        }
+    }
 
     private IEnumerator EnableJump()
     {
         yield return new WaitForSeconds(_jumpCooldown);
-        canJump = true;
         _animator.SetBool("isJumping", false);
-      
+        canJump = true;
+
+    }
+    private IEnumerator EnableCrouch()
+    {
+        yield return new WaitForSeconds(_crouchCooldown);
+        _collider.height *= 2;
+        _animator.SetBool("isCrouching", false);
+        canCrouch = true;
     }
 
     private void MoveLeft()
@@ -154,14 +178,11 @@ public class PlayerMovement : MonoBehaviour
     {
         canShift = false;
         float newX = (lane - 2) * _shiftDistance;
-        transform.DOMoveX(newX, _shiftDuration).SetEase(Ease.InOutQuint).OnComplete(() =>
+        transform.DOMove(new Vector3(newX, transform.position.y, transform.position.z + currentSpeed * _shiftDuration), _shiftDuration).OnComplete(() =>
         {
-            canShift = true; 
+            canShift = true;
         });
     }
-
-
-   
     protected bool IsGrounded()
     {
         LayerMask groundLayerMask = LayerMask.GetMask("Ground");
@@ -198,14 +219,20 @@ public class PlayerMovement : MonoBehaviour
                 {
                     Vector2 swipeDirection = (touchEndPos - touchStartPos).normalized;
 
+
                     if (swipeDirection.y > 0.8f && isGrounded && canJump)
                     {
                         Jump();
+                    }
+                    else if (swipeDirection.y < -0.8f && isGrounded && canCrouch)
+                    {
+                        Crough();
                     }
                     else if (swipeDirection.x < -0.8f && lane > 1)
                     {
                         MoveLeft();
                     }
+
                     else if (swipeDirection.x > 0.8f && lane < 3)
                     {
                         MoveRight();
