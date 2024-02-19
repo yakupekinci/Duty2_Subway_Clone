@@ -28,7 +28,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Transform checkPoint;
 
     [Header("Mobile Input")]
-    [SerializeField] private float swipeThreshold = 80f;
+    private float swipeThreshold = 80f;
 
     [Header("Speed Increase ")]
     [SerializeField] private float startingSpeed = 20f;
@@ -66,7 +66,11 @@ public class PlayerMovement : MonoBehaviour
     {
 
         if (!_gameManager.isStarted)
+        {
+
+            CancelInvoke("IncreaseSpeed");
             return;
+        }
         isGrounded = IsGrounded();
         SpeedAcc();
         HandleInput();
@@ -97,6 +101,11 @@ public class PlayerMovement : MonoBehaviour
         _animator.SetBool("isRunning", true);
         _rigidbody.velocity = new Vector3(0, _rigidbody.velocity.y, speed);
     }
+    public void ResetMovement()
+    {
+        currentSpeed = startingSpeed;
+        _rigidbody.velocity = Vector3.zero;
+    }
 
     private void HandleInput()
     {
@@ -114,14 +123,13 @@ public class PlayerMovement : MonoBehaviour
                 MoveRight();
             }
         }
-
-        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.UpArrow)) && (isGrounded && canJump))
+        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.UpArrow)) && isGrounded && canJump)
         {
             Jump();
         }
-        if ((Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow)) && (isGrounded && canCrouch))
+        if ((Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow)) && isGrounded && canCrouch)
         {
-            Crough();
+            Crouch();
         }
     }
 
@@ -136,7 +144,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private void Crough()
+    private void Crouch()
     {
         if (isGrounded)
         {
@@ -226,7 +234,7 @@ public class PlayerMovement : MonoBehaviour
                     }
                     else if (swipeDirection.y < -0.8f && isGrounded && canCrouch)
                     {
-                        Crough();
+                        Crouch();
                     }
                     else if (swipeDirection.x < -0.8f && lane > 1)
                     {
