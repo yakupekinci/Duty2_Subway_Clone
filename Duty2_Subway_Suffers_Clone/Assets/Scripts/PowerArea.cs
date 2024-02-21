@@ -7,7 +7,7 @@ public class PowerArea : MonoBehaviour
     {
         if (other.CompareTag("Obstacle"))
         {
-            Collider[] cl = other.gameObject.GetComponents<Collider>();
+            BoxCollider[] cl = other.gameObject.GetComponents<BoxCollider>();
             foreach (var cld in cl)
             {
                 cld.enabled = false;

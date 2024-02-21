@@ -27,17 +27,27 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float groundCheckRadius = 0.5f;
     [SerializeField] private Transform checkPoint;
 
+    [Header("Wall Check")]
+    [SerializeField] private LayerMask _wallLayer;
+    [SerializeField] private float wallCheckDistance = 0.1f;
+    [SerializeField] private float raycastDistance = 7.5f;
+     [SerializeField] private Transform WallcheckPoint;
+
     [Header("Mobile Input")]
     private float swipeThreshold = 80f;
 
     [Header("Speed Increase ")]
     [SerializeField] private float startingSpeed = 20f;
-    [SerializeField] private float speedIncreaseAmount = 2f;
-    [SerializeField] private float speedIncreaseInterval = 5f;
+    [SerializeField] private float maxSpeed = 70f;
+
+    [SerializeField] private float speedIncreaseAmount = 0.1f;
+    [SerializeField] private float speedIncreaseInterval = 0.5f;
 
     private bool canJump = true;
     private bool canCrouch = true;
     private bool isGrounded;
+    private bool isWallLeft;
+    private bool isWallRight;
     private int lane = 2;
     private bool canShift = true;
 
@@ -54,7 +64,7 @@ public class PlayerMovement : MonoBehaviour
         _animator = transform.GetChild(0).GetComponent<Animator>();
         _collider = GetComponent<CapsuleCollider>();
         currentSpeed = startingSpeed;
-        InvokeRepeating("IncreaseSpeed", speedIncreaseInterval, speedIncreaseInterval);
+
     }
 
     private void Awake()
@@ -67,13 +77,18 @@ public class PlayerMovement : MonoBehaviour
 
         if (!_gameManager.isStarted)
         {
-
-            CancelInvoke("IncreaseSpeed");
             return;
         }
         isGrounded = IsGrounded();
+        isWallLeft = IsWallLeft();
+        isWallRight = IsWallRight();
         SpeedAcc();
         HandleInput();
+
+    }
+    public void Startnvoke()
+    {
+        InvokeRepeating("IncreaseSpeed", speedIncreaseInterval, speedIncreaseInterval);
 
     }
     private void SpeedAcc()
@@ -85,7 +100,7 @@ public class PlayerMovement : MonoBehaviour
             currentTime = 0f;
             InvokeRepeating("IncreaseSpeed", speedIncreaseInterval, speedIncreaseInterval);
         }
-        if (currentSpeed >= 100f)
+        if (currentSpeed >= maxSpeed)
         {
             CancelInvoke("IncreaseSpeed");
         }
@@ -105,6 +120,9 @@ public class PlayerMovement : MonoBehaviour
     {
         currentSpeed = startingSpeed;
         _rigidbody.velocity = Vector3.zero;
+        float newX = (lane - 2) * _shiftDistance;
+        transform.DOMove(new Vector3(newX, transform.position.y, transform.position.z), 0.1f);
+
     }
 
     private void HandleInput()
@@ -114,11 +132,11 @@ public class PlayerMovement : MonoBehaviour
         MoveForward(currentSpeed);
         if (canShift)
         {
-            if ((Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow)) && (lane > 1))
+            if ((Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow)) && (lane > 1) && !isWallLeft)
             {
                 MoveLeft();
             }
-            if ((Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) && (lane < 3))
+            if ((Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) && (lane < 3) && !isWallRight)
             {
                 MoveRight();
             }
@@ -191,7 +209,7 @@ public class PlayerMovement : MonoBehaviour
             canShift = true;
         });
     }
-    protected bool IsGrounded()
+    private bool IsGrounded()
     {
         LayerMask groundLayerMask = LayerMask.GetMask("Ground");
         Vector3 checkPosition = checkPoint.transform.position + Vector3.up * groundCheckDistance;
@@ -202,6 +220,24 @@ public class PlayerMovement : MonoBehaviour
         }
         return false;
     }
+
+    private bool IsWallRight()
+    {
+        LayerMask wallLayerMask = LayerMask.GetMask("Wall");
+        float raycastDistances = raycastDistance;
+        Vector3 rightCheckPosition = WallcheckPoint.transform.position;
+
+        return Physics.Raycast(rightCheckPosition, WallcheckPoint.transform.right, raycastDistances, wallLayerMask);
+    }
+    private bool IsWallLeft()
+    {
+        LayerMask wallLayerMask = LayerMask.GetMask("Wall");
+        float raycastDistances = raycastDistance;
+        Vector3 leftCheckPosition = WallcheckPoint.transform.position;
+        return Physics.Raycast(leftCheckPosition, -WallcheckPoint.transform.right, raycastDistances, wallLayerMask);
+    }
+
+
     private void ApplyGravity()
     {
         _rigidbody.AddForce(Physics.gravity * _gravityScaler, ForceMode.Acceleration);
@@ -236,14 +272,15 @@ public class PlayerMovement : MonoBehaviour
                     {
                         Crouch();
                     }
-                    else if (swipeDirection.x < -0.8f && lane > 1)
+                    else if (swipeDirection.x < -0.8f && lane > 1 && !isWallLeft)
                     {
                         MoveLeft();
                     }
 
-                    else if (swipeDirection.x > 0.8f && lane < 3)
+                    else if (swipeDirection.x > 0.8f && lane < 3 && !isWallRight)
                     {
                         MoveRight();
+
                     }
                 }
             }

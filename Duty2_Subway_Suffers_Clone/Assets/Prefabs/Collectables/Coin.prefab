@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2628989071726882369}
   - component: {fileID: 6531234696049352943}
   - component: {fileID: 4759657532547475937}
+  - component: {fileID: 8086090707601824761}
   m_Layer: 0
   m_Name: Coin
   m_TagString: Untagged
@@ -60,6 +61,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25985d36e8361274ab6d8c13936c0777, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  goldSO: {fileID: 11400000, guid: 6a0521a5ecbf84b4aa6380aef727ab85, type: 2}
+  render: {fileID: 2605472048153501830}
+--- !u!95 &8086090707601824761
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2628989071726882368}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 248a6bda7d2593d4694d1909cb1680d8, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
 --- !u!1001 &2628989072434154970
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -77,15 +100,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4914818815454766, guid: 160a6121b4d25254da31bdab63ad82b7, type: 3}
       propertyPath: m_LocalScale.x
-      value: 2.5
+      value: 2.3
       objectReference: {fileID: 0}
     - target: {fileID: 4914818815454766, guid: 160a6121b4d25254da31bdab63ad82b7, type: 3}
       propertyPath: m_LocalScale.y
-      value: 2.5
+      value: 2.3
       objectReference: {fileID: 0}
     - target: {fileID: 4914818815454766, guid: 160a6121b4d25254da31bdab63ad82b7, type: 3}
       propertyPath: m_LocalScale.z
-      value: 2.5
+      value: 2.3
       objectReference: {fileID: 0}
     - target: {fileID: 4914818815454766, guid: 160a6121b4d25254da31bdab63ad82b7, type: 3}
       propertyPath: m_LocalPosition.x
@@ -134,6 +157,12 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 1a16beb18ce142f44b29f61a32e4f7cf, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 160a6121b4d25254da31bdab63ad82b7, type: 3}
+--- !u!23 &2605472048153501830 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 23772146215185756, guid: 160a6121b4d25254da31bdab63ad82b7,
+    type: 3}
+  m_PrefabInstance: {fileID: 2628989072434154970}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2624892290576098292 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4914818815454766, guid: 160a6121b4d25254da31bdab63ad82b7,

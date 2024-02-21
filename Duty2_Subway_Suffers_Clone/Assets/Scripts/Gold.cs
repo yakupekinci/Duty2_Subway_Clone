@@ -1,32 +1,43 @@
 using UnityEngine;
 using DG.Tweening;
-
+using System.Collections;
 
 public class Gold : MonoBehaviour
 {
     private UIManager uiManager;
-    void Start()
+    public GoldSO goldSO;
+    [SerializeField] private MeshRenderer render;
+
+    void Awake()
     {
+
         uiManager = FindObjectOfType<UIManager>();
-        gameObject.SetActive(true);
-        transform.DORotate(new Vector3(0f, 360f, 0f), 10f, RotateMode.FastBeyond360)
-            .SetLoops(-1, LoopType.Incremental) // Sonsuz döngü
-            .SetEase(Ease.Linear); // Dönüş hızını ayarla, örneğin Lineer eğri
+        goldSO.goldAmount = 0;
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            gameObject.SetActive(false);
-            GoldSO goldSO = Resources.Load<GoldSO>("GoldData");
-            if (goldSO != null)
-            {
-                goldSO.goldAmount++;
-                uiManager.GoldText(goldSO.goldAmount.ToString());
-            }
-
+            CollectGold();
         }
     }
 
+    private void CollectGold()
+    {
+        render.enabled = false;
+        StartCoroutine(DisableGoldAfterDelay(3));
+        if (goldSO != null)
+        {
+            goldSO.goldAmount++;
+            uiManager.GoldText(goldSO.goldAmount.ToString());
+        }
+    }
+    private IEnumerator DisableGoldAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        render.enabled = true;
+
+    }
 }

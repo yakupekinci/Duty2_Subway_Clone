@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
@@ -13,7 +15,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject MenuUI;
     [SerializeField] private GameObject StartBtn;
     [SerializeField] TMP_Text recordedScore;
-
+    [SerializeField] TMP_Text recordedHScore;
 
     private int score = 0;
     private int highScore = 20;
@@ -29,12 +31,10 @@ public class UIManager : MonoBehaviour
         highScore = PlayerPrefs.GetInt("HighScore", highScore);
     }
 
-
-
     public void GoldText(string gold)
     {
         Gold.text = gold;
-        score += 1 * 2;
+        score += 1 * 5;
         Score.text = score.ToString();
         CheckHighScore();
     }
@@ -46,11 +46,14 @@ public class UIManager : MonoBehaviour
             PlayerPrefs.SetInt("HighScore", highScore);
 
             Score.color = Color.red;
-            Sequence sequence = DOTween.Sequence();
-            sequence.Append(Score.transform.DOScale(new Vector3(1.5f, 1.5f, 1.5f), 0.2f)).SetEase(Ease.Linear);
-            sequence.Append(Score.transform.DOScale(new Vector3(0.75f, .75f, .75f), 0.2f)).SetEase(Ease.Linear);
-            sequence.Append(Score.transform.DOScale(new Vector3(1.5f, 1.5f, 1.5f), 0.2f)).SetEase(Ease.Linear);
-            sequence.Append(Score.transform.DOScale(new Vector3(0.75f, .75f, .75f), 0.2f)).SetEase(Ease.Linear);
+            if (Score.transform != null)
+            {
+                Sequence sequence = DOTween.Sequence();
+                sequence.Append(Score.transform.DOScale(new Vector3(1.5f, 1.5f, 1.5f), 0.2f)).SetEase(Ease.Linear);
+                sequence.Append(Score.transform.DOScale(new Vector3(0.75f, .75f, .75f), 0.2f)).SetEase(Ease.Linear);
+                sequence.Append(Score.transform.DOScale(new Vector3(1.5f, 1.5f, 1.5f), 0.2f)).SetEase(Ease.Linear);
+                sequence.Append(Score.transform.DOScale(new Vector3(0.75f, .75f, .75f), 0.2f)).SetEase(Ease.Linear);
+            }
         }
     }
 
@@ -63,7 +66,7 @@ public class UIManager : MonoBehaviour
         StartCoroutine(IncreaseScore());
     }
 
-    public void StopCoroutine()
+    public void StopScoreTxt()
     {
         StopCoroutine(IncreaseScore());
     }
@@ -75,9 +78,13 @@ public class UIManager : MonoBehaviour
     public void DeadPanel()
     {
         recordedScore.text = Score.text;
+        recordedHScore.text = highScore + "";
         DeathPanel.SetActive(true);
         GameUI.SetActive(false);
         MenuUI.SetActive(false);
-
+    }
+    public void Restart_BTN()
+    {
+        SceneManager.LoadScene(0);
     }
 }

@@ -46,6 +46,7 @@ public class PlayerController : MonoBehaviour
             yield break;
 
         yield return new WaitForSeconds(_shakeDuration);
+        playerMovement.ResetMovement();
         for (int i = 0; i < blinkRepeatCount; i++)
         {
 
@@ -65,6 +66,7 @@ public class PlayerController : MonoBehaviour
     {
         playerMovement._animator.SetBool("isRunning", false);
         playerMovement._gameManager.isStarted = false;
+        playerMovement.CancelInvoke("IncreaseSpeed");
     }
 
     private void ShakeAndStop()
@@ -77,15 +79,16 @@ public class PlayerController : MonoBehaviour
     {
         WaitForLastHeart();
         yield return new WaitForSeconds(2f);
+        DOTween.Clear();
         uIManager.DeadPanel();
-
-
+        uIManager.StopScoreTxt();
     }
 
     private void RemoveHearth(int i)
     {
         Sequence sequence = DOTween.Sequence();
-        if (health >= 0)
+
+        if (health >= 0 && healths[healths.Length - i] != null)
         {
             sequence.Append(healths[healths.Length - i].transform.DOScale(Vector3.zero, 0.2f)).SetEase(Ease.InOutCirc);
             sequence.Append(healths[healths.Length - i].transform.DOScale(new Vector3(1, 1, 1), 0.2f)).SetEase(Ease.InOutCirc);

@@ -75,6 +75,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5b2266548035fa4a97120ad7a4b0111, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1674329300
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1674329301}
+  m_Layer: 0
+  m_Name: CheckPointWall
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1674329301
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1674329300}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 657267811594718443}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &83252014162837952
 GameObject:
   m_ObjectHideFlags: 0
@@ -333,6 +364,7 @@ Transform:
   - {fileID: 1605969437384690463}
   - {fileID: 2772434803839553910}
   - {fileID: 950610842}
+  - {fileID: 1674329301}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -385,7 +417,7 @@ MonoBehaviour:
   currentSpeed: 20
   _shiftDistance: 7.5
   _shiftDuration: 0.15
-  _jumpForce: 45
+  _jumpForce: 40
   _jumpCooldown: 0.7
   _crouchCooldown: 0.7
   _gravityScaler: 3
@@ -395,10 +427,15 @@ MonoBehaviour:
   groundCheckDistance: 1.15
   groundCheckRadius: 1
   checkPoint: {fileID: 2772434803839553910}
-  swipeThreshold: 80
+  _wallLayer:
+    serializedVersion: 2
+    m_Bits: 256
+  wallCheckDistance: 0.1
+  raycastDistance: 7.5
   startingSpeed: 20
-  speedIncreaseAmount: 0.1
-  speedIncreaseInterval: 0.5
+  maxSpeed: 80
+  speedIncreaseAmount: 0.15
+  speedIncreaseInterval: 0.4
 --- !u!114 &307963766244320377
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -411,8 +448,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00d3eb4f968ec414db42eb2739a05973, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 3
+  healths: []
+  hltsRoots: {fileID: 0}
   playerMesh: {fileID: 3771448757024306375}
+  health: 3
   _blinkDuration: 0.25
   _shakeDuration: 0.4
   blinkRepeatCount: 5
