@@ -12,11 +12,13 @@ public class MapActiver : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            var obj = MapPool.mapPool.Where(x => !x.activeSelf);
-            var map = obj.FirstOrDefault();
-            map.SetActive(true);
+            
+            var objArray = MapPool.mapPool.Where(x => !x.activeSelf);
+            var map = objArray.FirstOrDefault();
             map.transform.position = transform.parent.transform.GetChild(0).transform.position;
-            map.GetComponent<Map>().SpawnObstacle();
+            map.SetActive(true);
+
+
         }
     }
 }

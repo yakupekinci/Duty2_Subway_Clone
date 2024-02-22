@@ -28,7 +28,7 @@ public class ObstacleMove : MonoBehaviour
     private void Start()
     {
 
-        spoint = transform.position;
+        spoint = transform.localPosition;
     }
     private void OnCollisionEnter(Collision other)
     {
@@ -37,12 +37,25 @@ public class ObstacleMove : MonoBehaviour
             PlayerController player = other.gameObject.GetComponent<PlayerController>();
             player.TakeDamage();
         }
+
+    }
+    private void OnTriggerEnter(Collider other)
+    {
         if (other.gameObject.CompareTag("Start"))
         {
-            canMove=false;
-            transform.position = spoint;
-            canMove=true;
+            StartCoroutine(ActiveMove());
         }
+    }
+
+
+    IEnumerator ActiveMove()
+    {
+       
+        canMove = false;
+        transform.position = spoint;
+        yield return new WaitForSeconds(3f);
+        canMove = true;
+
     }
 }
 

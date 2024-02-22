@@ -8,6 +8,8 @@ TagManager:
   - Start
   - Obstacle
   - Wall
+  - Gold
+  - Power
   layers:
   - Default
   - TransparentFX

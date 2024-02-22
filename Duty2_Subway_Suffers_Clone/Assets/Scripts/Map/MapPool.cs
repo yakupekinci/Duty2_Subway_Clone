@@ -3,18 +3,33 @@ using UnityEngine;
 
 public class MapPool : MonoBehaviour
 {
-    public List<GameObject> mapPool;
     public List<GameObject> mapPrefabs;
+    public int number;
+    public List<GameObject> mapPool = new List<GameObject>();
 
-    public int number = 15;
     private void Start()
     {
+        // İlk üç elemanı rastgele sırala
+        ShuffleFirstThree();
+
+        // İlk üç elemanı tekrarlayarak mapPool listesine ekle
         for (int i = 0; i < 3 * number; i++)
         {
-            var mapInstante = Instantiate(mapPrefabs[i]);
-            mapInstante.SetActive(false);
-            mapPool.Add(mapInstante);
+            var mapInstance = Instantiate(mapPrefabs[i % 3]);
+            mapInstance.transform.SetParent(transform);
+            mapInstance.SetActive(false);
+            mapPool.Add(mapInstance);
         }
     }
 
+    private void ShuffleFirstThree()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            int randomIndex = Random.Range(i, 3);
+            GameObject temp = mapPrefabs[i];
+            mapPrefabs[i] = mapPrefabs[randomIndex];
+            mapPrefabs[randomIndex] = temp;
+        }
+    }
 }

@@ -6,38 +6,48 @@ public class Gold : MonoBehaviour
 {
     private UIManager uiManager;
     public GoldSO goldSO;
+    Vector3 sp;
+    Transform parent;
     [SerializeField] private MeshRenderer render;
 
     void Awake()
     {
-
         uiManager = FindObjectOfType<UIManager>();
-        goldSO.goldAmount = 0;
+    
+    }
+    private void Start()
+    {
+        sp = transform.localPosition;
+        parent=transform.parent;
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
+
             CollectGold();
         }
     }
 
-    private void CollectGold()
+    public void CollectGold()
     {
         render.enabled = false;
-        StartCoroutine(DisableGoldAfterDelay(3));
+        StartCoroutine(DisableGoldAfterDelay(7));
         if (goldSO != null)
         {
             goldSO.goldAmount++;
             uiManager.GoldText(goldSO.goldAmount.ToString());
         }
     }
-    private IEnumerator DisableGoldAfterDelay(float delay)
+    public IEnumerator DisableGoldAfterDelay(float delay)
     {
-        yield return new WaitForSeconds(delay);
 
+        yield return new WaitForSeconds(delay);
+        transform.SetParent(parent);
+        transform.position = sp;
         render.enabled = true;
+        
 
     }
 }
