@@ -8,7 +8,7 @@ public class ObstacleMove : MonoBehaviour
     private Rigidbody _rb;
     [SerializeField] private float _speed = 15;
     Vector3 spoint;
-    bool canMove;
+    private bool cannMove;
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
@@ -16,10 +16,10 @@ public class ObstacleMove : MonoBehaviour
     private void Update()
     {
         if (transform.root.gameObject.activeSelf)
-            canMove = true;
+            cannMove = true;
         else
         {
-            canMove = false;
+            cannMove = false;
             return;
         }
 
@@ -50,11 +50,11 @@ public class ObstacleMove : MonoBehaviour
 
     IEnumerator ActiveMove()
     {
-       
-        canMove = false;
+
+        cannMove = false;
         transform.position = spoint;
         yield return new WaitForSeconds(3f);
-        canMove = true;
+        cannMove = true;
 
     }
 }

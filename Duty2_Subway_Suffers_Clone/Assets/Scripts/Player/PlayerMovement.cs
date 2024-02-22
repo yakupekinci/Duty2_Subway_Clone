@@ -29,9 +29,8 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Wall Check")]
     [SerializeField] private LayerMask _wallLayer;
-    [SerializeField] private float wallCheckDistance = 0.1f;
     [SerializeField] private float raycastDistance = 7.5f;
-     [SerializeField] private Transform WallcheckPoint;
+    [SerializeField] private Transform WallcheckPoint;
 
     [Header("Mobile Input")]
     private float swipeThreshold = 80f;
@@ -141,7 +140,7 @@ public class PlayerMovement : MonoBehaviour
                 MoveRight();
             }
         }
-        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.UpArrow)) && isGrounded && canJump)
+        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)) && isGrounded && canJump)
         {
             Jump();
         }

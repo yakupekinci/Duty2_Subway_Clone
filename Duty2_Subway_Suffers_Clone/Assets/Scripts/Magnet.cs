@@ -10,10 +10,17 @@ public class Magnet : MonoBehaviour
         if (other.CompareTag("Player"))
         {
 
-            int objNum = other.gameObject.transform.childCount;
-            GameObject powerAreas = other.transform.GetChild(objNum - 1).GetComponent<PowerAreas>().gameObject;
-            powerAreas.SetActive(true);
-            StartCoroutine(PowerAreaTimer(powerAreas));
+            PowerAreas powerAreas = other.GetComponentInChildren<PowerAreas>(true);
+            if (powerAreas != null)
+            {            
+                powerAreas.gameObject.SetActive(true);
+                StartCoroutine(PowerAreaTimer(powerAreas.gameObject));
+            }
+            else
+            {
+
+            }
+
             Destroy(gameObject);
         }
     }
