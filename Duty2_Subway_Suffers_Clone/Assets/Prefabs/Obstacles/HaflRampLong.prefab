@@ -374,7 +374,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3427691121431605648}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: HaflRampLong
   m_TagString: Untagged
   m_Icon: {fileID: 0}

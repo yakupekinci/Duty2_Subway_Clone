@@ -48,7 +48,7 @@ public class PlayerMovement : MonoBehaviour
     private bool isWallLeft;
     private bool isWallRight;
     private int lane = 2;
-    private bool canShift = true;
+    public bool canShift = true;
 
     private Vector2 touchStartPos;
     private Vector2 touchEndPos;
@@ -131,11 +131,12 @@ public class PlayerMovement : MonoBehaviour
         MoveForward(currentSpeed);
         if (canShift)
         {
-            if ((Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow)) && (lane > 1) && !isWallLeft)
+            if ((Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow)) && (lane > 1) && !isWallLeft && canShift)
             {
+
                 MoveLeft();
             }
-            if ((Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) && (lane < 3) && !isWallRight)
+            if ((Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) && (lane < 3) && !isWallRight && canShift)
             {
                 MoveRight();
             }
@@ -155,11 +156,12 @@ public class PlayerMovement : MonoBehaviour
         if (isGrounded)
         {
             _animator.SetBool("isJumping", true);
-            _rigidbody.velocity = new Vector3(_rigidbody.velocity.x, _jumpForce, _rigidbody.velocity.z);
+            _rigidbody.AddForce(Vector3.up * _jumpForce, ForceMode.Impulse);
             canJump = false;
             StartCoroutine(EnableJump());
         }
     }
+
 
     private void Crouch()
     {
@@ -189,25 +191,37 @@ public class PlayerMovement : MonoBehaviour
 
     private void MoveLeft()
     {
+        if (!canShift)
+            return;
+
         lane--;
-        ChangeLane();
+        StartCoroutine(ChangeLane());
     }
 
     private void MoveRight()
     {
+        if (!canShift)
+            return;
+
         lane++;
-        ChangeLane();
+        StartCoroutine(ChangeLane());
     }
 
-    private void ChangeLane()
+    private IEnumerator ChangeLane()
     {
+        if (!canShift)
+            yield break;
+
         canShift = false;
+
         float newX = (lane - 2) * _shiftDistance;
-        transform.DOMove(new Vector3(newX, transform.position.y, transform.position.z + currentSpeed * _shiftDuration), _shiftDuration).OnComplete(() =>
-        {
-            canShift = true;
-        });
+        transform.DOMove(new Vector3(newX, transform.position.y, transform.position.z + currentSpeed * _shiftDuration), _shiftDuration);
+
+        yield return new WaitForSeconds(_shiftDuration);
+
+        canShift = true;
     }
+
     private bool IsGrounded()
     {
         LayerMask groundLayerMask = LayerMask.GetMask("Ground");
@@ -235,14 +249,10 @@ public class PlayerMovement : MonoBehaviour
         Vector3 leftCheckPosition = WallcheckPoint.transform.position;
         return Physics.Raycast(leftCheckPosition, -WallcheckPoint.transform.right, raycastDistances, wallLayerMask);
     }
-
-
     private void ApplyGravity()
     {
         _rigidbody.AddForce(Physics.gravity * _gravityScaler, ForceMode.Acceleration);
     }
-
-
     private void HandleMobileInput()
     {
         if (Input.touchCount > 0)

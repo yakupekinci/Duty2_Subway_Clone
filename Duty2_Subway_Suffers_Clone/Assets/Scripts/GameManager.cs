@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour
     {
         isStarted = true;
         uIManager.StartScoreTxt();
+        uIManager.StartGame();
         playerMovement.Startnvoke();
 
     }

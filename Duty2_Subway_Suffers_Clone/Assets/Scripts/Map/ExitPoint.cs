@@ -8,7 +8,7 @@ public class ExitPoint : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            transform.parent.transform.GetComponent<Map>().SpawnObstacle();
+           // transform.parent.transform.GetComponent<Map>().SpawnObstacle();
             transform.parent.gameObject.SetActive(false);
 
         }

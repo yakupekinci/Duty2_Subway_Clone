@@ -14,6 +14,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject GameUI;
     [SerializeField] private GameObject MenuUI;
     [SerializeField] private GameObject StartBtn;
+    [SerializeField] private GameObject MagnetPnl;
     [SerializeField] TMP_Text recordedScore;
     [SerializeField] TMP_Text recordedHScore;
 
@@ -24,13 +25,17 @@ public class UIManager : MonoBehaviour
     private void Start()
     {
         DeathPanel.SetActive(false);
-        GameUI.SetActive(true);
+        GameUI.SetActive(false);
         MenuUI.SetActive(true);
         Gold.text = "" + 0;
         Score.text = "" + 0;
         highScore = PlayerPrefs.GetInt("HighScore", highScore);
     }
-
+    public void StartGame()
+    {
+        GameUI.SetActive(true);
+        DeathPanel.SetActive(false);
+    }
     public void GoldText(string gold)
     {
         Gold.text = gold;
@@ -87,4 +92,18 @@ public class UIManager : MonoBehaviour
     {
         SceneManager.LoadScene(0);
     }
+
+
+    private float timers = 0f;
+    public void MagnetPanel()
+    {
+        MagnetPnl.SetActive(true);
+        timers += Time.deltaTime;
+        if (timers > 15)
+        {
+            MagnetPnl.SetActive(false);
+            timers = 0;
+        }
+    }
+
 }

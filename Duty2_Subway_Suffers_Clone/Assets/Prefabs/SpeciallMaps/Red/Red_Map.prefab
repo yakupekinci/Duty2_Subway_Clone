@@ -54,23 +54,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   redObstaclePF:
-  - {fileID: 5802082210467443966, guid: 6ceccc0817a043d4881b6d3e65501d1f, type: 3}
-  - {fileID: 7918998491437745788, guid: 585ac1dbbd037b44c842ff46daf1c37a, type: 3}
   - {fileID: 6989966004072290994, guid: 289f67456f70ae14dbc84c035cff765a, type: 3}
   - {fileID: 7918998491437745788, guid: 718f263f207a7ae4aad9b0cbaf45a9ad, type: 3}
-  - {fileID: 6989966004072290994, guid: 1425f6f8733741a4ab64bdd134dcea36, type: 3}
+  - {fileID: 8744789601710011701, guid: 3ebbeda0ab59c964d83a93dda4e01cad, type: 3}
   - {fileID: 1205519850151804375, guid: 5a9aadc64f56e5f40b28ae68ad1b942c, type: 3}
-  - {fileID: 2947535936180985185, guid: 9e2d393556625714ca6174096f234285, type: 3}
+  - {fileID: 6989966004072290994, guid: 1425f6f8733741a4ab64bdd134dcea36, type: 3}
   - {fileID: 1218333708669923528, guid: c2a26b737b0f0bc458c6361a415bcf8a, type: 3}
+  - {fileID: 2947535936180985185, guid: 9e2d393556625714ca6174096f234285, type: 3}
+  - {fileID: 8744789601710011701, guid: 18f75300acdd02c4284e0b4e9e9830ad, type: 3}
   - {fileID: 1218333708669923528, guid: 73f94a177b6f49746b5b55a2c0e6f107, type: 3}
   - {fileID: 8744789601710011701, guid: d4c7a439f2ab27c44b2645c3d606a2eb, type: 3}
-  - {fileID: 8744789601710011701, guid: 94e3cbe8d91e73c43acaf50ee7670c86, type: 3}
-  - {fileID: 8744789601710011701, guid: 7ad7185fd36d6924980fb203893a50d8, type: 3}
-  - {fileID: 7918998491437745788, guid: 585ac1dbbd037b44c842ff46daf1c37a, type: 3}
   - {fileID: 6989966004072290994, guid: 289f67456f70ae14dbc84c035cff765a, type: 3}
+  - {fileID: 7918998491437745788, guid: 585ac1dbbd037b44c842ff46daf1c37a, type: 3}
   - {fileID: 1218333708669923528, guid: 73f94a177b6f49746b5b55a2c0e6f107, type: 3}
+  - {fileID: 8744789601710011701, guid: 2ee0163b9776d644eb93e413f94528cb, type: 3}
   - {fileID: 6989966004072290994, guid: 1425f6f8733741a4ab64bdd134dcea36, type: 3}
-  - {fileID: 8744789601710011701, guid: 94e3cbe8d91e73c43acaf50ee7670c86, type: 3}
+  - {fileID: 7918998491437745788, guid: 585ac1dbbd037b44c842ff46daf1c37a, type: 3}
+  - {fileID: 5802082210467443966, guid: 6ceccc0817a043d4881b6d3e65501d1f, type: 3}
+  - {fileID: 8744789601710011701, guid: 2ee0163b9776d644eb93e413f94528cb, type: 3}
   greenObstaclePF: []
   blueObstaclePF: []
   leftSP: {fileID: 8988901358321185379}

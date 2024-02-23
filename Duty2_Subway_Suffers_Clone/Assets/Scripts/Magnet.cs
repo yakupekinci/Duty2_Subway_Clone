@@ -4,7 +4,12 @@ using DG.Tweening;
 using UnityEngine;
 public class Magnet : MonoBehaviour
 {
+    private UIManager uIManager;
     float maxTimer = 10f;
+    private void Start()
+    {
+        uIManager = FindObjectOfType<UIManager>();
+    }
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -12,7 +17,8 @@ public class Magnet : MonoBehaviour
 
             PowerAreas powerAreas = other.GetComponentInChildren<PowerAreas>(true);
             if (powerAreas != null)
-            {            
+            {
+                uIManager.MagnetPanel();
                 powerAreas.gameObject.SetActive(true);
                 StartCoroutine(PowerAreaTimer(powerAreas.gameObject));
             }
@@ -21,7 +27,7 @@ public class Magnet : MonoBehaviour
 
             }
 
-            Destroy(gameObject);
+            transform.localScale = Vector3.zero;
         }
     }
     IEnumerator PowerAreaTimer(GameObject gameObject)

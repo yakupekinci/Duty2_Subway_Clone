@@ -9,10 +9,10 @@ public class MapPool : MonoBehaviour
 
     private void Start()
     {
-        // İlk üç elemanı rastgele sırala
+       
         ShuffleFirstThree();
 
-        // İlk üç elemanı tekrarlayarak mapPool listesine ekle
+      
         for (int i = 0; i < 3 * number; i++)
         {
             var mapInstance = Instantiate(mapPrefabs[i % 3]);
@@ -32,4 +32,5 @@ public class MapPool : MonoBehaviour
             mapPrefabs[randomIndex] = temp;
         }
     }
+    
 }

@@ -68,13 +68,11 @@ public class PlayerController : MonoBehaviour
         playerMovement._gameManager.isStarted = false;
         playerMovement.CancelInvoke("IncreaseSpeed");
     }
-
     private void ShakeAndStop()
     {
         transform.DOShakePosition(_shakeDuration, 1, 90);
         playerMovement.ResetMovement();
     }
-
     private IEnumerator Die()
     {
         WaitForLastHeart();
@@ -83,7 +81,6 @@ public class PlayerController : MonoBehaviour
         uIManager.DeadPanel();
         uIManager.StopScoreTxt();
     }
-
     private void RemoveHearth(int i)
     {
         Sequence sequence = DOTween.Sequence();

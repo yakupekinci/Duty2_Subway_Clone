@@ -33,7 +33,7 @@ public class Gold : MonoBehaviour
     public void CollectGold()
     {
         render.enabled = false;
-        StartCoroutine(DisableGoldAfterDelay(7));
+        StartCoroutine(DisableGoldAfterDelay(3));
         if (goldSO != null)
         {
             goldSO.goldAmount++;
